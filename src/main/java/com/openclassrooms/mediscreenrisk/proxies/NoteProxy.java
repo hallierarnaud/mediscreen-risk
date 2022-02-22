@@ -1,7 +1,17 @@
 package com.openclassrooms.mediscreenrisk.proxies;
 
-import org.springframework.cloud.openfeign.FeignClient;
+import com.openclassrooms.mediscreenrisk.domain.object.Note;
 
-@FeignClient(name = "mediscreen-note", url = "")
-public class NoteProxy {
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.List;
+
+@FeignClient(name = "mediscreen-note", url = "${host.note}")
+public interface NoteProxy {
+
+  @GetMapping(value = "/notes/{patientId}")
+  List<Note> getNotesByPatientId(@PathVariable long patientId);
+
 }
