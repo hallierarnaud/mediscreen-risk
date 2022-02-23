@@ -1,5 +1,6 @@
 package com.openclassrooms.mediscreenrisk.domain.service;
 
+import com.openclassrooms.mediscreenrisk.domain.object.Patient;
 import com.openclassrooms.mediscreenrisk.proxies.NoteProxy;
 import com.openclassrooms.mediscreenrisk.proxies.PatientProxy;
 
@@ -15,8 +16,13 @@ public class RiskService {
   @Autowired
   private NoteProxy noteProxy;
 
-  public String getRiskByPatientId(final Long patientId) {
-    return "";
+  public Patient getPatientByPatientId(long patientId) {
+    Patient patient = patientProxy.getPatientById(patientId);
+    return patient;
+  }
+
+  public String getRisk (long patientId) {
+    return getPatientByPatientId(patientId).getSex();
   }
 
 }
