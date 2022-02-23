@@ -25,11 +25,7 @@ public class RiskController {
    */
   @GetMapping("/risks/{patientId}")
   public String getRiskByPatientId(@PathVariable("patientId") long patientId) {
-    try {
       return riskService.getRisk(patientId);
-    } catch (NoSuchElementException e) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "patient " + patientId + " doesn't exist");
-    }
   }
 
 }
