@@ -33,23 +33,14 @@ public class RiskServiceTest {
   private RiskService riskService;
 
   @Test
-  public void getPatientAge_shouldReturnOk() {
+  public void getRisk_shouldReturnNone() {
     // GIVEN
     Patient patient = new Patient();
     Date birthDate = new Date(100, 1, 1);
     patient.setBirthdate(birthDate);
+    patient.setSex("M");
     when(patientProxy.getPatientById(anyLong())).thenReturn(patient);
 
-    // WHEN
-    int actualAge = riskService.calculatePatientAge(anyLong());
-
-    // THEN
-    assertEquals(22, actualAge);
-  }
-
-  @Test
-  public void getTriggerCount_shouldReturnOk() {
-    // GIVEN
     List<Note> notes = new ArrayList<>();
     Note note = new Note();
     note.setPatientNote("Vertige");
@@ -57,11 +48,76 @@ public class RiskServiceTest {
     when(noteProxy.getNotesByPatientId(anyLong())).thenReturn(notes);
 
     // WHEN
-    int actualTriggerCount = riskService.getTriggerCount(anyLong());
+    String actualRisk = riskService.getRisk(anyLong());
 
     // THEN
-    assertEquals(1, actualTriggerCount);
+    assertEquals("None", actualRisk);
+  }
 
+  @Test
+  public void getRisk_shouldReturnBorderline() {
+    // GIVEN
+    Patient patient = new Patient();
+    Date birthDate = new Date(50, 1, 1);
+    patient.setBirthdate(birthDate);
+    patient.setSex("M");
+    when(patientProxy.getPatientById(anyLong())).thenReturn(patient);
+
+    List<Note> notes = new ArrayList<>();
+    Note note = new Note();
+    note.setPatientNote("Vertige Réaction");
+    notes.add(note);
+    when(noteProxy.getNotesByPatientId(anyLong())).thenReturn(notes);
+
+    // WHEN
+    String actualRisk = riskService.getRisk(anyLong());
+
+    // THEN
+    assertEquals("Borderline", actualRisk);
+  }
+
+  @Test
+  public void getRisk_shouldReturnInDanger() {
+    // GIVEN
+    Patient patient = new Patient();
+    Date birthDate = new Date(100, 1, 1);
+    patient.setBirthdate(birthDate);
+    patient.setSex("M");
+    when(patientProxy.getPatientById(anyLong())).thenReturn(patient);
+
+    List<Note> notes = new ArrayList<>();
+    Note note = new Note();
+    note.setPatientNote("Vertige Fumeur Réaction");
+    notes.add(note);
+    when(noteProxy.getNotesByPatientId(anyLong())).thenReturn(notes);
+
+    // WHEN
+    String actualRisk = riskService.getRisk(anyLong());
+
+    // THEN
+    assertEquals("In Danger", actualRisk);
+  }
+
+  @Test
+  public void getRisk_shouldReturnEarlyOnset() {
+    // GIVEN
+    Patient patient = new Patient();
+    Date birthDate = new Date(100, 1, 1);
+    patient.setBirthdate(birthDate);
+    patient.setSex("M");
+    when(patientProxy.getPatientById(anyLong())).thenReturn(patient);
+
+    List<Note> notes = new ArrayList<>();
+    Note note = new Note();
+    note.setPatientNote("Vertige Fumeur Réaction Rechute Poids");
+    notes.add(note);
+    when(noteProxy.getNotesByPatientId(anyLong())).thenReturn(notes);
+
+    // WHEN
+    String actualRisk = riskService.getRisk(anyLong());
+
+    // THEN
+    assertEquals("Early onset", actualRisk);
   }
 
 }
