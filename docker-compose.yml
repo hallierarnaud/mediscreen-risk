@@ -1,0 +1,6 @@
+version: "3"
+services:
+  mediscreenrisk:
+    build: .
+    ports:
+      - "8083:8083"
