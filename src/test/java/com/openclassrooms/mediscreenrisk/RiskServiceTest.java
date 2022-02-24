@@ -1,5 +1,6 @@
 package com.openclassrooms.mediscreenrisk;
 
+import com.openclassrooms.mediscreenrisk.controller.DTO.RiskRequest;
 import com.openclassrooms.mediscreenrisk.domain.object.Note;
 import com.openclassrooms.mediscreenrisk.domain.object.Patient;
 import com.openclassrooms.mediscreenrisk.domain.service.RiskService;
@@ -48,10 +49,10 @@ public class RiskServiceTest {
     when(noteProxy.getNotesByPatientId(anyLong())).thenReturn(notes);
 
     // WHEN
-    String actualRisk = riskService.getRisk(anyLong());
+    RiskRequest actualRisk = riskService.getRisk(anyLong());
 
     // THEN
-    assertEquals("None", actualRisk);
+    assertEquals("None", actualRisk.getRisk());
   }
 
   @Test
@@ -70,10 +71,10 @@ public class RiskServiceTest {
     when(noteProxy.getNotesByPatientId(anyLong())).thenReturn(notes);
 
     // WHEN
-    String actualRisk = riskService.getRisk(anyLong());
+    RiskRequest actualRisk = riskService.getRisk(anyLong());
 
     // THEN
-    assertEquals("Borderline", actualRisk);
+    assertEquals("Borderline", actualRisk.getRisk());
   }
 
   @Test
@@ -92,10 +93,10 @@ public class RiskServiceTest {
     when(noteProxy.getNotesByPatientId(anyLong())).thenReturn(notes);
 
     // WHEN
-    String actualRisk = riskService.getRisk(anyLong());
+    RiskRequest actualRisk = riskService.getRisk(anyLong());
 
     // THEN
-    assertEquals("In Danger", actualRisk);
+    assertEquals("In Danger", actualRisk.getRisk());
   }
 
   @Test
@@ -114,10 +115,10 @@ public class RiskServiceTest {
     when(noteProxy.getNotesByPatientId(anyLong())).thenReturn(notes);
 
     // WHEN
-    String actualRisk = riskService.getRisk(anyLong());
+    RiskRequest actualRisk = riskService.getRisk(anyLong());
 
     // THEN
-    assertEquals("Early onset", actualRisk);
+    assertEquals("Early onset", actualRisk.getRisk());
   }
 
 }

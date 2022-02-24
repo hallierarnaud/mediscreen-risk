@@ -1,5 +1,6 @@
 package com.openclassrooms.mediscreenrisk;
 
+import com.openclassrooms.mediscreenrisk.controller.DTO.RiskRequest;
 import com.openclassrooms.mediscreenrisk.controller.endpoint.RiskController;
 import com.openclassrooms.mediscreenrisk.domain.service.RiskService;
 
@@ -13,6 +14,7 @@ import java.util.NoSuchElementException;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -28,7 +30,8 @@ public class RiskControllerTest {
 
   @Test
   public void getRiskByPatientId_shouldReturnOk() throws Exception {
-    when(riskService.getRisk(anyInt())).thenReturn("None");
+    RiskRequest riskRequest = new RiskRequest();
+    when(riskService.getRisk(anyLong())).thenReturn(riskRequest);
     mockMvc.perform(get("/risks/1")).andExpect(status().isOk());
   }
 
