@@ -1,5 +1,6 @@
 package com.openclassrooms.mediscreenrisk.domain.service;
 
+import com.openclassrooms.mediscreenrisk.controller.DTO.RiskRequest;
 import com.openclassrooms.mediscreenrisk.domain.object.Note;
 import com.openclassrooms.mediscreenrisk.domain.object.Patient;
 import com.openclassrooms.mediscreenrisk.proxies.NoteProxy;
@@ -47,7 +48,8 @@ public class RiskService {
     return triggerCount;
   }
 
-  public String getRisk (long patientId) {
+  public RiskRequest getRisk (long patientId) {
+    RiskRequest riskRequest = new RiskRequest();
     String risk = "None";
     if (getTriggerCount(patientId) >= 2 && calculatePatientAge(patientId) > 30) {
       risk = "Borderline";
@@ -64,7 +66,11 @@ public class RiskService {
             (calculatePatientAge(patientId) > 30 && getTriggerCount(patientId) >= 8)) {
       risk = "Early onset";
     }
-    return risk;
+    riskRequest.setRisk(risk);
+    riskRequest.setAge(calculatePatientAge(patientId));
+    riskRequest.setSex(patientProxy.getPatientById(patientId).getSex());
+    riskRequest.setTrigger(getTriggerCount(patientId));
+    return riskRequest;
   }
 
 }
