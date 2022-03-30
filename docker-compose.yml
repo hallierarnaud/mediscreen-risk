@@ -1,6 +1,38 @@
 version: "3"
 services:
-  mediscreenrisk:
+  mediscreen-risk:
     build: .
+    image: mediscreen-risk
+    depends_on:
+      - mediscreen-note
+      - mediscreen-patient
     ports:
       - "8083:8083"
+  mediscreen-note:
+    build: ../Mediscreen-note
+    image: mediscreen-note
+    ports:
+      - "8082:8082"
+    environment:
+      - spring.data.mongodb.host=mongodb
+    depends_on:
+      - mongodb
+  mongodb:
+    image: mongo
+    ports:
+      - "27018:27017"
+  mediscreen-patient:
+    build: ../Mediscreen-patient
+    hostname: patient
+    image: mediscreen-patient
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldbpatient:3306/mediscreen
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysqldbpatient
+  mysqldbpatient:
+    image: mysql:8
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=mediscreen
